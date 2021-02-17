@@ -34,7 +34,7 @@ set_config_params() {
     export DNS_NAME=${DNS_NAME:="$PROJECT_ID.example.com"}
     export GKE_CLUSTER_NAME=${GKE_CLUSTER_NAME:=apigee-hybrid}
     export GKE_CLUSTER_MACHINE_TYPE=${GKE_CLUSTER_MACHINE_TYPE:=e2-standard-4}
-    export APIGEE_CTL_VERSION='1.3.4'
+    export APIGEE_CTL_VERSION=${APIGEE_HYBRID_VERSION:='1.4.1'}
     export KPT_VERSION='v0.34.0'
     export CERT_MANAGER_VERSION='v1.1.0'
 

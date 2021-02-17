@@ -1,15 +1,18 @@
 #!/bin/bash
+set -e
 
 echo "Setting environment variables..."
-export PROJECT_ID=$(whoami)-hybrid-1
-export REGION='australia-southeast1'
-export AX_REGION=$REGION
-export ZONE='australia-southeast1-a'
-export GKE_CLUSTER_NAME='apigee-hybrid'
+source environment.sh
 
-export ENV_NAME='test1'
-export ENV_GROUP_NAME='test'
-export DNS_NAME="$PROJECT_ID.example.com"
+echo "PROJECT_ID=${PROJECT_ID}"
+echo "REGION=${REGION}"
+echo "AX_REGION=${AX_REGION}"
+echo "ZONE=${ZONE}"
+echo "GKE_CLUSTER_NAME=${GKE_CLUSTER_NAME}"
+echo "APIGEE_HYBRID_VERSION=${APIGEE_HYBRID_VERSION}"
+echo "ENV_NAME=${ENV_NAME}"
+echo "ENV_GROUP_NAME=${ENV_GROUP_NAME}"
+echo "DNS_NAME=${DNS_NAME}"
 
 echo "Setting gcloud config..."
 gcloud config set project $PROJECT_ID
@@ -19,5 +22,6 @@ gcloud config set compute/zone $ZONE
 echo "Starting installation..."
 bash initialize-runtime-gke.sh
 
-echo "Checking Istio Ingress Gateway IP address..."
-kubectl -n istio-system get services/istio-ingressgateway -o jsonpath="{.status.loadBalancer.ingress[*].ip}"
+echo "Checking API gateway endpoint..."
+GATEWAY_IP=$(kubectl -n istio-system get services/istio-ingressgateway -o jsonpath="{.status.loadBalancer.ingress[*].ip}")
+echo "${DNS_NAME} -> ${GATEWAY_IP}"
