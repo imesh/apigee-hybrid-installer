@@ -1,10 +1,12 @@
-# Apigee hybrid 1.3 installation on GKE
+# Apigee hybrid Installer for GKE
 
-The aim of this project is to facilitate a fully automated quickstart setup of Apigee hybrid on GKE. The configuration options are limited and simplified on purpose. The resulting Apigee hybrid environment is intended to serve as an initial end to end setup without production grade hardening and reliability.
+This repository was forked from [devrel](https://github.com/apigee/devrel/tree/main/tools/hybrid-quickstart) with the intention of creating a single repostiory for installing Apigee hybrid and adding new features.
 
-For tooling related to production setup and operation of Apigee hybrid, please visit the [AHR project on Github](https://github.com/yuriylesyuk/ahr).
+This installer provides a fully automated quickstart setup of Apigee hybrid on GKE. The configuration options are limited and simplified on purpose. The resulting Apigee hybrid environment is intended to serve as an initial end to end setup without production grade hardening and reliability.
 
 ## Prerequisites
+
+Install following prerequisites if not installed already:
 
 ```bash
 #installed kubectl
@@ -23,33 +25,40 @@ gcloud auth list
 gcloud init
 ```
 
-## Override Default Config (if desired)
+## How to Install
 
-If the following environment variables are not defined, the script
-automatically sets them based on the default values in steps.sh.
+1. Set GCP project name and other parameters in `environment.sh`:
+   ```bash
+   export PROJECT_ID=$(whoami)-hybrid-1
+   export REGION='australia-southeast1'
+   export ZONE='australia-southeast1-a'
+   export GKE_CLUSTER_NAME='apigee-hybrid'
+   export APIGEE_HYBRID_VERSION="1.4.1"
+   export ENV_NAME='test1'
+   export ENV_GROUP_NAME='test'
+   export DNS_NAME="$PROJECT_ID.example.com"
+   ```
 
-```bash
-export PROJECT_ID=xxx
-export REGION='europe-west1'
-export ZONE='europe-west1-b'
-export DNS_NAME=apigee.example.com
-export CLUSTER_NAME=apigee-hybrid
-```
+2. Execute `install.sh`:
+   ```bash
+   ./install.sh
+   ```
 
-## Initialize GKE cluster
+## How to Uninstall
 
-```bash
-./initialize-gke.sh
-```
+1. Ensure that relevant GCP project name and other parameters are set in `environment.sh`:
+   ```bash
+   export PROJECT_ID=$(whoami)-hybrid-1
+   export REGION='australia-southeast1'
+   export ZONE='australia-southeast1-a'
+   export GKE_CLUSTER_NAME='apigee-hybrid'
+   export APIGEE_HYBRID_VERSION="1.4.1"
+   export ENV_NAME='test1'
+   export ENV_GROUP_NAME='test'
+   export DNS_NAME="$PROJECT_ID.example.com"
+   ```
 
-## (Optional) Provision Trusted TLS/SSL Certificates
-
-See the [this](https://community.apigee.com/articles/86322/free-trusted-ssl-certificates-for-apigee-hybrid-in.html) blog post in the Apigee community.
-
-## Clean up
-
-Delete the runtime resources to avoid paying for unused GKE clusters.
-
-```bash
-./destroy-runtime.sh
-```
+2. Execute `uninstall.sh`:
+   ```bash
+   ./uninstall.sh
+   ```
