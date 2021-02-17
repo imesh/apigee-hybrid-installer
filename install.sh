@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Setting environment variables..."
-export PROJECT_ID=imesh-hybrid-2
+export PROJECT_ID=$(whoami)-hybrid-1
 export REGION='australia-southeast1'
 export AX_REGION=$REGION
 export ZONE='australia-southeast1-a'
