@@ -1,75 +1,55 @@
-# Apigee DevRel
+# Apigee hybrid 1.3 installation on GKE
 
-[![DevRel All Projects Pipeline](https://github.com/apigee/devrel/workflows/DevRel%20All%20Projects%20Pipeline/badge.svg)](https://github.com/apigee/devrel/actions?query=workflow%3A%22DevRel+All+Projects+Pipeline%22)
-[![DevRel Github Pages Pipeline](https://github.com/apigee/devrel/workflows/DevRel%20Github%20Pages%20Pipeline/badge.svg)](https://github.com/apigee/devrel/actions?query=workflow%3A%22DevRel+Github+Pages+Pipeline%22)
+The aim of this project is to facilitate a fully automated quickstart setup of Apigee hybrid on GKE. The configuration options are limited and simplified on purpose. The resulting Apigee hybrid environment is intended to serve as an initial end to end setup without production grade hardening and reliability.
 
-Common solutions and tools developed by Apigee.
+For tooling related to production setup and operation of Apigee hybrid, please visit the [AHR project on Github](https://github.com/yuriylesyuk/ahr).
 
-## References
+## Prerequisites
 
-This folder contains reference solutions across a variety of Apigee products.
-It is expected that these solutions are used as an illustration or extended
-further to fit a particular use case.
+```bash
+#installed kubectl
+kubectl version
 
-- [Swagger 2 based Mocks on Apigee Hosted Targets](references/apigee-sandbox-v1) -
-  Swagger 2 based Mocks on Apigee SaaS
-- [API Mocker on Apigee Hosted Targets](references/apimocker-hostedtargets) -
-  API Mocks hosted on Apigee SaaS
-- [Common Shared Flows](references/common-shared-flows) -
-  Reusable API Policies including Security, Traffic Management, Error Handling and
-  CORS
-- [Custom Java Extensions in Apigee](references/java-callout) -
-  A reference project that includes a Java Extension
-- [Jenkins CI/CD Pipeline](references/cicd-jenkins) -
-  Reference implementation for a CI/CD Pipeline using Jenkins and the Apigee
-  Deploy Maven Plugin
-- [Proxy Template](references/proxy-template) -
-  An extensible templating tool to bootstrap API proxies containing Security,
-  Traffic Management, Error Handling
-- [Writing JavaScript in Apigee](references/js-callout) -
-  Demonstrate best practices in writing JavaScript code in Apigee context
-- [Southbound mTLS](references/southbound-mtls) -
-  Reference for using mTLS client authentication for securely connecting Apigee to
-  backend services
+#installed tar
+tar --help
 
-## Tools
+#installed openssl
+openssl version
 
-This folder contains ready-made utilities which simplify and assist the usage of
-Apigee products.
+#installed gcloud
+gcloud auth list
 
-- [Organization Cleanup](tools/organization-cleanup) -
-  A tool to cleanup proxies in an Apigee organization, leveraging
-  [Another Apigee Client](tools/another-apigee-client)
-- [Pipeline Runner](tools/pipeline-runner) -
-  A tool to lint, build and test groups of Apigee projects
-- [Another Apigee Client](tools/another-apigee-client) -
-  A lightweight Apigee Management CLI
-- [Apigee hybrid Quickstart GKE](tools/hybrid-quickstart) -
-  A quickstart setup configuration for Apigee hybrid on GKE
+#login if needed
+gcloud init
+```
 
-## Labs
+## Override Default Config (if desired)
 
-This folder contains raw assets used to generate content to teach a particular
-technical or non-technical topic.
+If the following environment variables are not defined, the script
+automatically sets them based on the default values in steps.sh.
 
-- [Best Practices Hackathon](labs/best-practices-hackathon) -
-  A 300 level lab to learn Apigee Best Practices
+```bash
+export PROJECT_ID=xxx
+export REGION='europe-west1'
+export ZONE='europe-west1-b'
+export DNS_NAME=apigee.example.com
+export CLUSTER_NAME=apigee-hybrid
+```
 
-## Contributing
+## Initialize GKE cluster
 
-See the [contributing instructions](/CONTRIBUTING.md) to get started.
+```bash
+./initialize-gke.sh
+```
 
-## License
+## (Optional) Provision Trusted TLS/SSL Certificates
 
-All solutions within this repository are provided under the
-[Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) license.
-Please see the [LICENSE](/LICENSE) file for more detailed terms and conditions.
+See the [this](https://community.apigee.com/articles/86322/free-trusted-ssl-certificates-for-apigee-hybrid-in.html) blog post in the Apigee community.
 
-## Disclaimer
+## Clean up
 
-This repository and its contents are not an official Google product.
+Delete the runtime resources to avoid paying for unused GKE clusters.
 
-## Contact
-
-Questions, issues and comments should be directed to
-[apigee-devrel-owners@google.com](mailto:apigee-devrel-owners@google.com).
+```bash
+./destroy-runtime.sh
+```
