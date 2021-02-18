@@ -50,3 +50,7 @@ Install the following prerequisites if not installed already:
    ```bash
    ./uninstall.sh
    ```
+
+## Disclaimer
+
+This is not an officially supported Google product.
